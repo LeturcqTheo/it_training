@@ -13,8 +13,6 @@ use App\Entity\Formation;
 use App\Entity\FormSatisfaction;
 use App\Entity\Mail;
 use App\Entity\Note;
-use App\Entity\Question;
-use App\Entity\Reponse;
 use App\Entity\Salle;
 use App\Entity\Session;
 use App\Entity\SousTheme;
@@ -58,12 +56,12 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Monitoring Itformation');
+            ->setTitle('It-Formation');
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        //yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
 
         yield MenuItem::section('Formation & Thèmes');
         yield MenuItem::linkToCrud('Formations', 'fas fa-book-open', Formation::class);
@@ -76,11 +74,11 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Checklists', 'fas fa-check-square', Checklist::class);
 
         yield MenuItem::section('Formateurs & Stagiaires');
-        yield MenuItem::linkToCrud('Formateurs', 'fas fa-chalkboard-teacher', Formateur::class);
         yield MenuItem::linkToCrud('Stagiaires', 'fas fa-users', Stagiaire::class);
+        yield MenuItem::linkToCrud('Formateurs', 'fas fa-chalkboard-teacher', Formateur::class);
         yield MenuItem::linkToCrud('Affectations', 'fas fa-user-tag', Affecte::class);
         
-        yield MenuItem::section('Utilisateurs');
+        yield MenuItem::section('Comptes Utilisateurs');
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
 
         yield MenuItem::section('Présences & Évaluations');
