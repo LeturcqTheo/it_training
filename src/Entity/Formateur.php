@@ -31,6 +31,7 @@ class Formateur extends User
     public function __construct()
     {
         $this->affectes = new ArrayCollection();
+        $this->setRoles(["ROLE_FORMATEUR"]);
     }
 
     public function __toString(): string
