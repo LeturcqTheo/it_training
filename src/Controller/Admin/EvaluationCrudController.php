@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Evaluation;
 use App\Form\QuestionType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -19,7 +20,11 @@ class EvaluationCrudController extends AbstractCrudController
     {
         return [
             TextField::new('nom', 'Nom'),
-            TextField::new('categorie', 'Categorie'),
+            ChoiceField::new('categorie', 'Catégorie')
+                ->setChoices([
+                    'Prérequis' => 'prerequis',
+                    'Final' => 'final',
+                ]),
             CollectionField::new('questions', 'Questions')
                 ->setEntryType(QuestionType::class)
                 ->allowAdd()
