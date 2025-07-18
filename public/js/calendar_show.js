@@ -5,8 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
         locale: 'fr',
         events: function(fetchInfo, successCallback, failureCallback) {
             const salleId = document.getElementById('salle-selector').value;
-            const url = salleId ? '/fc-load-events?salle_id=' + salleId + "&start=0000-01-01&end=9999-12-31" : '/fc-load-events';
-            fetch('/fc-load-events?salle_id=' + salleId + "&start=0000-01-01&end=9999-12-31")
+            // Mettre le start et le end pour pouvoir verifier avec fc-load-events
+            // Exemple: http://127.0.0.1:8000/fc-load-events?start=0000-01-01&end=9999-12-31
+            fetch('/fc-load-events?start=0000-01-01&end=9999-12-31&salle_id=' + salleId)
                 .then(response => response.json())
                 .then(data => successCallback(data))
                 .catch(failureCallback);
