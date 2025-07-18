@@ -17,7 +17,6 @@
         <li><strong>Nombre de participants :</strong> {{ evenement.nbrParticipant }}</li>
         <li><strong>Date début :</strong> {{ evenement.dateDebut|date('d/m/Y H:i') }}</li>
         <li><strong>Date fin :</strong> {{ evenement.dateFin|date('d/m/Y H:i') }}</li>
-        <li><strong>Salle :</strong> {{ evenement.salle.nom }}</li>
     </ul>
 
     <a href="{{ path('app_home') }}">Retour</a>
