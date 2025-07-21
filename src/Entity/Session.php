@@ -19,9 +19,6 @@ class Session
     #[ORM\Column]
     private ?int $min_participant = null;
 
-    #[ORM\Column]
-    private ?float $prix = null;
-
     /**
      * @var Collection<int, Affecte>
      */
@@ -85,18 +82,6 @@ class Session
     public function setMinParticipant(int $min_participant): static
     {
         $this->min_participant = $min_participant;
-
-        return $this;
-    }
-
-    public function getPrix(): ?float
-    {
-        return $this->prix;
-    }
-
-    public function setPrix(float $prix): static
-    {
-        $this->prix = $prix;
 
         return $this;
     }

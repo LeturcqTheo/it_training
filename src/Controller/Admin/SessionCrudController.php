@@ -22,7 +22,6 @@ class SessionCrudController extends AbstractCrudController
             AssociationField::new('formation', 'Formation'),
             AssociationField::new('salle', 'Salle'),
             IntegerField::new('min_participant', 'N° minimum de participant'),
-            MoneyField::new('prix', 'Prix')->setCurrency('EUR'),
             DateTimeField::new('date_debut', 'Date début'),
             DateTimeField::new('date_fin', 'Date fin'),
             AssociationField::new('stagiaires', 'Stagiaires'),
