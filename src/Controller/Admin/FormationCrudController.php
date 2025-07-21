@@ -6,6 +6,7 @@ use App\Entity\Formation;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -25,6 +26,7 @@ class FormationCrudController extends AbstractCrudController
                     'Inter' => 'inter',
                     'Intra' => 'intra',
                 ]),
+            MoneyField::new('prix', 'Prix')->setCurrency('EUR'),
             AssociationField::new('theme', 'Thème'),
             TextEditorField::new('fiche_formation', 'Fiche Formation'),
         ];
