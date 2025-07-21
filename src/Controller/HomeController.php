@@ -7,6 +7,7 @@ use App\Entity\Salle;
 use App\Entity\Session;
 use App\Repository\EvenementRepository;
 use App\Repository\SalleRepository;
+use App\Repository\SessionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,7 +43,7 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/create-event', name: 'create_event', methods: ['POST'])]
-    public function createEvent(Request $request, EntityManagerInterface $em, EvenementRepository $eventRepo): JsonResponse
+    public function createEvent(Request $request, EntityManagerInterface $em, EvenementRepository $eventRepo, SessionRepository $sessionRepo): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -55,6 +56,7 @@ final class HomeController extends AbstractController
         }
 
         $conflicts = $eventRepo->findOverlappingEvents($salle->getId(), $start, $end);
+        $conflicts += $sessionRepo->findOverlappingEvents($salle->getId(), $start, $end);
 
         if (count($conflicts) > 0) {
             return new JsonResponse(['error' => 'La salle est déjà occupée durant cette période.'], 400);

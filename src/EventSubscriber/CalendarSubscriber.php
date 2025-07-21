@@ -55,7 +55,7 @@ class CalendarSubscriber implements EventSubscriberInterface
                 new \DateTime($evenement->getDateFin()->format('Y-m-d H:i:s'))
             );
             $event->setOptions([
-                'backgroundColor' => '#007bff',  // bleu
+                'backgroundColor' => '#007bff',
                 'borderColor' => '#007bff',
                 'textColor' => '#fff',
             ]);
@@ -76,16 +76,16 @@ class CalendarSubscriber implements EventSubscriberInterface
 
         foreach ($sessions as $session) {
             $event = new Event(
-                (string) $session, // utilise __toString() de Session
+                (string) $session,
                 new \DateTime($session->getDateDebut()->format('Y-m-d H:i:s')),
                 new \DateTime($session->getDateFin()->format('Y-m-d H:i:s'))
             );
             $event->setOptions([
-                'backgroundColor' => '#28a745', // vert
+                'backgroundColor' => '#28a745',
                 'borderColor' => '#28a745',
                 'textColor' => '#fff',
             ]);
-            $event->addOption('url', '/session/' . $session->getId());
+            $event->addOption('url', 'session/' . $session->getId());
             $setDataEvent->addEvent($event);
         }
     }
