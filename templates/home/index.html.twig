@@ -15,17 +15,17 @@
 </div>
 
 <div class="example-wrapper">
+    <div id="calendar-holder"></div>
+
     <select id="salle-selector">
-        <option value="">Toutes les salles</option>
+        <option value="">---</option>
         {% for salle in salles %}
             <option value="{{ salle.id }}">{{ salle.nom }}</option>
         {% endfor %}
     </select>
-    
-    <div id="calendar-holder"></div>
 
     <form id="create_event">
-        <label for="nom_event">Nom évenement:</label>
+        <label for="nom_event">Nom:</label>
         <input id="nom_event" type="text">
         <label for="date_debut">Début:</label>
         <input id="date_debut" type="datetime-local">

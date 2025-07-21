@@ -14,9 +14,9 @@
     <h1>{{ session }}</h1>
     <ul>
         <li><strong>Formation :</strong> {{ session.formation.nom }}</li>
+        <li><strong>Salle :</strong> {{ session.salle }}</li>
         <li><strong>Date début :</strong> {{ session.dateDebut|date('d/m/Y H:i') }}</li>
         <li><strong>Date fin :</strong> {{ session.dateFin|date('d/m/Y H:i') }}</li>
-        <li><strong>Prix :</strong> {{ session.prix }} €</li>
         <li><strong>Participants minimum :</strong> {{ session.minParticipant }}</li>
     </ul>
 

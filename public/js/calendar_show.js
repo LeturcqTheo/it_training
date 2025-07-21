@@ -50,7 +50,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 currentEvent = calendar.addEvent({
                     title: nom,
                     start: dateDebut,
-                    end: dateFin
+                    end: dateFin,
+                    backgroundColor: '#bbbbbb',
+                    borderColor: '#bbbbbb'
                 });
             }
         }
@@ -58,5 +60,54 @@ document.addEventListener('DOMContentLoaded', function () {
 
     dateDebutInput.addEventListener('change', previewEvent);
     dateFinInput.addEventListener('change', previewEvent);
-    nomInput.addEventListener('change', previewEvent);
+
+    document.getElementById('create_event').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const nom = document.getElementById('nom_event').value;
+        const dateDebut = document.getElementById('date_debut').value;
+        const dateFin = document.getElementById('date_fin').value;
+        const salleId = document.getElementById('salle-selector').value;
+
+        if (!nom || !dateDebut || !dateFin) {
+            alert('Merci de remplir tous les champs.');
+            return;
+        }
+
+        const data = {
+            nom: nom,
+            date_debut: dateDebut,
+            date_fin: dateFin,
+            salle_id: salleId
+        };
+
+        fetch('/create-event', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': '{{ csrf_token("create_event") }}'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Erreur lors de la création de l\'événement.');
+            return response.json();
+        })
+        .then(result => {
+            alert('Événement créé avec succès !');
+            nomInput.value = '';
+            dateDebutInput.value = '';
+            dateFinInput.value = '';
+            if (currentEvent) {
+                currentEvent.remove();
+                currentEvent = null;
+            }
+            currentEvent = null;
+            calendar.refetchEvents();
+        })
+        .catch(error => {
+            alert(error.message);
+        });
+    });
 });
