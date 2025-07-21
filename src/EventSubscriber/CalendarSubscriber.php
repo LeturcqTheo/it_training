@@ -59,7 +59,7 @@ class CalendarSubscriber implements EventSubscriberInterface
                 'borderColor' => '#007bff',
                 'textColor' => '#fff',
             ]);
-            $event->addOption('url', '/evenement/' . $evenement->getId());
+            $event->addOption('url', 'evenement/' . $evenement->getId());
             $setDataEvent->addEvent($event);
         }
 

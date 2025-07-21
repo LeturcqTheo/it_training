@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const dateFin = document.getElementById('date_fin').value;
         const salleId = document.getElementById('salle-selector').value;
 
-        if (!nom || !dateDebut || !dateFin) {
+        if (!nom || !dateDebut || !dateFin || !salleId) {
             alert('Merci de remplir tous les champs.');
             return;
         }
