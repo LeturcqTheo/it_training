@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const calendarEl = document.getElementById('calendar-holder');
+    // Creates the calendar
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         locale: 'fr',
@@ -23,8 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Renders the calendar
     calendar.render();
 
+    // Fatches the events for the calendar
     document.getElementById('salle-selector').addEventListener('change', function () {
         calendar.refetchEvents();
     });
@@ -32,9 +35,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const dateDebutInput = document.getElementById('date_debut');
     const dateFinInput = document.getElementById('date_fin');
     const nomInput = document.getElementById('nom_event');
+    let currentEvent = null;
 
-    let currentEvent = null; // will store our event object
-
+    // Function that shows a preview of an event during it's creation
     function previewEvent() {
         const dateDebut = dateDebutInput.value;
         const dateFin = dateFinInput.value;
@@ -42,11 +45,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (dateDebut && dateFin) {
             if (currentEvent) {
-                // Update existing event dates
                 currentEvent.setStart(dateDebut);
                 currentEvent.setEnd(dateFin);
+                currentEvent.setProp('title', nom);
             } else {
-                // Add new event and keep reference
                 currentEvent = calendar.addEvent({
                     title: nom,
                     start: dateDebut,
@@ -58,9 +60,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Shows the preview event when the inputs change
     dateDebutInput.addEventListener('change', previewEvent);
     dateFinInput.addEventListener('change', previewEvent);
+    nomInput.addEventListener('change', previewEvent);
 
+    // Attempt to create the event, part of it is handled by the controller
     document.getElementById('create_event').addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -90,9 +95,12 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify(data)
         })
-        .then(response => {
-            if (!response.ok) throw new Error('Erreur lors de la création de l\'événement.');
-            return response.json();
+        .then(async response => {
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || 'Erreur lors de la création de l\'événement.');
+            }
+            return data;
         })
         .then(result => {
             alert('Événement créé avec succès !');
