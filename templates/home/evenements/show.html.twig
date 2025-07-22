@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de l'événement{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        {% include "sidebar/sidebar.html.twig" %}
+        <main class="col-md-10 ms-sm-auto px-4 py-4">
+            <h2 class="fw-bold">{{ evenement.nom }}</h2>
+            <ul class="nav nav-tabs my-3"></ul>
+            <ul>
+                <li><strong>Responsable :</strong> {{ evenement.responsable }}</li>
+                <li><strong>Salle :</strong> {{ evenement.salle }}</li>
+                <li><strong>Nombre de participants :</strong> {{ evenement.nbrParticipant }}</li>
+                <li><strong>Date début :</strong> {{ evenement.dateDebut|date('d/m/Y H:i') }}</li>
+                <li><strong>Date fin :</strong> {{ evenement.dateFin|date('d/m/Y H:i') }}</li>
+            </ul>
+            <a href="{{ path('app_home') }}" class="btn btn-secondary mb-3">Retour</a>
+        </main>
+    </div>
+</div>
+{% endblock %}

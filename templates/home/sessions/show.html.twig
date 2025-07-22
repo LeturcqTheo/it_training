@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de la session{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        {% include "sidebar/sidebar.html.twig" %}
+
+        <main class="col-md-10 ms-sm-auto px-4 py-4">
+            <h2 class="fw-bold">{{ session }}</h2>
+            <ul class="nav nav-tabs my-3"></ul>
+            <ul>
+                <li><strong>Formation :</strong> {{ session.formation.nom }}</li>
+                <li><strong>Salle :</strong> {{ session.salle }}</li>
+                <li><strong>Date début :</strong> {{ session.dateDebut|date('d/m/Y H:i') }}</li>
+                <li><strong>Date fin :</strong> {{ session.dateFin|date('d/m/Y H:i') }}</li>
+                <li><strong>Participants minimum :</strong> {{ session.minParticipant }}</li>
+                
+                <li><strong>Liste des stagiaires :</strong> </li>
+                {% if session.stagiaires|length > 0 %}
+                    <ul>
+                        {% for stagiaire in session.stagiaires %}
+                            <li>{{ stagiaire.nom }} {{ stagiaire.prenom }} — {{ stagiaire.email }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </ul>
+            <a href="{{ path('app_home') }}" class="btn btn-secondary mb-3">Retour</a>
+        </main>
+    </div>
+</div>
+{% endblock %}

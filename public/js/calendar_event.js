@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('salle-selector').addEventListener('change', function () {
         calendar.refetchEvents();
     });
-
+    
     const dateDebutInput = document.getElementById('date_debut');
     const dateFinInput = document.getElementById('date_fin');
     const nomInput = document.getElementById('nom_event');
@@ -73,8 +73,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const dateDebut = document.getElementById('date_debut').value;
         const dateFin = document.getElementById('date_fin').value;
         const salleId = document.getElementById('salle-selector').value;
+        const nomResp = document.getElementById('nom_resp').value;
+        const nbrPart = document.getElementById('nbr_part').value;
 
-        if (!nom || !dateDebut || !dateFin || !salleId) {
+        if (!nom || !dateDebut || !dateFin || !salleId || !nomResp || !nbrPart) {
             alert('Merci de remplir tous les champs.');
             return;
         }
@@ -83,10 +85,12 @@ document.addEventListener('DOMContentLoaded', function () {
             nom: nom,
             date_debut: dateDebut,
             date_fin: dateFin,
-            salle_id: salleId
+            salle_id: salleId,
+            nom_resp: nomResp,
+            nbr_part: parseInt(nbrPart)
         };
 
-        fetch('/create-event', {
+        fetch('/create-event/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -104,9 +108,13 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(result => {
             alert('Événement créé avec succès !');
-            nomInput.value = '';
-            dateDebutInput.value = '';
-            dateFinInput.value = '';
+
+            document.getElementById('nom_event').value = '';
+            document.getElementById('nom_resp').value = '';
+            document.getElementById('nbr_part').value = '';
+            document.getElementById('date_debut').value = '';
+            document.getElementById('date_fin').value = '';
+
             if (currentEvent) {
                 currentEvent.remove();
                 currentEvent = null;

@@ -46,6 +46,7 @@ class CalendarSubscriber implements EventSubscriberInterface
             $qb->andWhere('e.salle = :salleId')->setParameter('salleId', $salleId);
         }
 
+        
         $evenements = $qb->getQuery()->getResult();
 
         foreach ($evenements as $evenement) {

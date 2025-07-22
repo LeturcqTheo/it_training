@@ -1,0 +1,20 @@
+.fc-daygrid-day-top a, .fc-scrollgrid-sync-inner a {
+    color: black;
+    text-decoration: none;
+}
+
+.nav-link {
+    font-weight: bold;
+}
+
+.itt-sidebar-bgc {
+    background-color: rgb(11, 17, 75);
+}
+
+.itt-sidebar-tc {
+    color: rgb(56, 222, 185);
+}
+
+.itt-sidebar-plc {
+    color: rgb(113, 47, 111);
+}
