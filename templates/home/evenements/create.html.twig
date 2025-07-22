@@ -10,7 +10,6 @@
         <main class="col-md-10 ms-sm-auto px-4 py-4">
             <h2 class="fw-bold">Agenda partagé</h2>
             <ul class="nav nav-tabs my-3"></ul>
-            <a href="{{ path('app_home') }}" class="btn btn-secondary mb-3">Retour</a>
 
             <div class="row my-4">
                 <div class="col-md-6">
@@ -22,7 +21,7 @@
                         <h5 class="mb-4">Créer un événement</h5>
                         <div class="row">
                             <div class="mb-3 col-md-6">
-                                <label for="centre-selector" class="form-label">Centre:</label>
+                                <label for="centre-selector" class="form-label">Centre <span class='text-danger fw-bold'>*</span></label>
                                 <select id="centre-selector" class="form-select">
                                     <option value="">-</option>
                                     {% for centre in centres %}
@@ -31,7 +30,7 @@
                                 </select>
                             </div>
                             <div class="mb-3 col-md-6">
-                                <label for="salle-selector" class="form-label">Salle:</label>
+                                <label for="salle-selector" class="form-label">Salle <span class='text-danger fw-bold'>*</span></label>
                                 <select id="salle-selector" class="form-select" disabled>
                                     <option value="">-</option>
                                     {% for salle in salles %}
@@ -41,24 +40,24 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="nom_event" class="form-label">Nom de l'evenement:</label>
+                            <label for="nom_event" class="form-label">Nom de l'evenement <span class='text-danger fw-bold'>*</span></label>
                             <input id="nom_event" name="nom_event" type="text" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="nom_resp" class="form-label">Nom du resposable:</label>
+                            <label for="nom_resp" class="form-label">Nom du resposable <span class='text-danger fw-bold'>*</span></label>
                             <input id="nom_resp" name="nom_resp" type="text" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="nbr_part" class="form-label">Nbr de participants:</label>
+                            <label for="nbr_part" class="form-label">Nbr de participants <span class='text-danger fw-bold'>*</span></label>
                             <input id="nbr_part" name="nbr_part" type="number" min="1" class="form-control">
                         </div>
                         <div class="row">
                             <div class="mb-3 col-md-6">
-                                <label for="date_debut" class="form-label">Date de début:</label>
+                                <label for="date_debut" class="form-label">Date de début <span class='text-danger fw-bold'>*</span></label>
                                 <input id="date_debut" name="date_debut" type="datetime-local" class="form-control">
                             </div>
                             <div class="mb-3 col-md-6">
-                                <label for="date_fin" class="form-label">Date de fin:</label>
+                                <label for="date_fin" class="form-label">Date de fin <span class='text-danger fw-bold'>*</span></label>
                                 <input id="date_fin" name="date_fin" type="datetime-local" class="form-control">
                             </div>
                         </div>
@@ -66,6 +65,7 @@
                     </form>
                 </div>
             </div>
+            <a href="{{ path('app_home') }}" class="btn btn-secondary mb-3">Retour</a>
         </main>
     </div>
 </div>
