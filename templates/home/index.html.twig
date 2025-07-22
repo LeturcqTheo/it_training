@@ -17,14 +17,27 @@
                 <div class="col-md-6">
                     <div id="calendar-holder"></div>
                 </div>
-                <div class="col-md-3 d-flex flex-column gap-3">
-                    <label for="salle-selector" class="form-label fw-bold">Choisir une salle</label>
-                    <select id="salle-selector" class="form-select mb-4">
-                        <option value="">---</option>
-                        {% for salle in salles %}
-                            <option value="{{ salle.id }}">{{ salle.nom }}</option>
-                        {% endfor %}
-                    </select>
+                <div class="col-md-4 d-flex flex-column gap-3">
+                    <div class="row">
+                        <div class="mb-3 col-md-6">
+                            <label for="centre-selector" class="form-label">Centre:</label>
+                            <select id="centre-selector" class="form-select">
+                                <option value="">-</option>
+                                {% for centre in centres %}
+                                    <option value="{{ centre.id }}">{{ centre.nom }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="salle-selector" class="form-label">Salle:</label>
+                            <select id="salle-selector" class="form-select" disabled>
+                                <option value="">-</option>
+                                {% for salle in salles %}
+                                    <option value="{{ salle.id }}" data-centre="{{ salle.centreformation.id }}">{{ salle.nom }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
 
                     <!-- Action Links -->
                     <a href="{{ path('app_create_event') }}" class="btn btn-primary">Créer un événement</a>
@@ -40,4 +53,5 @@
     {{ parent() }}
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
     <script src="{{ asset('js/calendar.js') }}"></script>
+    <script src="{{ asset('js/salle_selector.js') }}"></script>
 {% endblock %}

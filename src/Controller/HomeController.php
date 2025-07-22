@@ -6,6 +6,7 @@ use App\Entity\Evenement;
 use App\Entity\Formation;
 use App\Entity\Salle;
 use App\Entity\Session;
+use App\Repository\CentreFormationRepository;
 use App\Repository\EvenementRepository;
 use App\Repository\FormationRepository;
 use App\Repository\SalleRepository;
@@ -21,10 +22,11 @@ use Symfony\Component\Routing\Attribute\Route;
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(SalleRepository $salleRepository): Response
+    public function index(SalleRepository $salleRepository, CentreFormationRepository $centreRepo): Response
     {
         return $this->render('home/index.html.twig', [
             'salles' => $salleRepository->findAll(),
+            'centres' => $centreRepo->findAll(),
         ]);
     }
     
@@ -45,10 +47,11 @@ final class HomeController extends AbstractController
     }   
 
     #[Route('/create-event', name: 'app_create_event')]
-    public function showCreateEvent(SalleRepository $salleRepository): Response
+    public function showCreateEvent(SalleRepository $salleRepository, CentreFormationRepository $centreRepo): Response
     {
         return $this->render('home/evenements/create.html.twig', [
             'salles' => $salleRepository->findAll(),
+            'centres' => $centreRepo->findAll(),
         ]);
     }
 
@@ -87,12 +90,13 @@ final class HomeController extends AbstractController
     } 
 
     #[Route('/create-session', name: 'app_create_session')]
-    public function showCreateSession(SalleRepository $salleRepository, FormationRepository $formaRepository, StagiaireRepository $stagRepository): Response
+    public function showCreateSession(SalleRepository $salleRepository, FormationRepository $formaRepository, StagiaireRepository $stagRepository, CentreFormationRepository $centreRepo): Response
     {
         return $this->render('home/sessions/create.html.twig', [
             'salles' => $salleRepository->findAll(),
             'formations' => $formaRepository->findAll(),
             'stagiaires' => $stagRepository->findAll(),
+            'centres' => $centreRepo->findAll(),
         ]);
     }
 

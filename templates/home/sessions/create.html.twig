@@ -21,15 +21,25 @@
                 <div class="col-md-6">
                     <form id="create_session" class="p-3 border rounded shadow-sm bg-light">
                         <h5 class="mb-4">Créer une session</h5>
-
-                        <div class="mb-3">
-                            <label for="salle-selector" class="form-label">Salle:</label>
-                            <select id="salle-selector" class="form-select">
-                                <option value="">---</option>
-                                {% for salle in salles %}
-                                    <option value="{{ salle.id }}">{{ salle.nom }}</option>
-                                {% endfor %}
-                            </select>
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label for="centre-selector" class="form-label">Centre:</label>
+                                <select id="centre-selector" class="form-select">
+                                    <option value="">-</option>
+                                    {% for centre in centres %}
+                                        <option value="{{ centre.id }}">{{ centre.nom }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="salle-selector" class="form-label">Salle:</label>
+                                <select id="salle-selector" class="form-select" disabled>
+                                    <option value="">-</option>
+                                    {% for salle in salles %}
+                                        <option value="{{ salle.id }}" data-centre="{{ salle.centreformation.id }}">{{ salle.nom }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="forma-selector" class="form-label">Formation:</label>
@@ -75,6 +85,7 @@
     {{ parent() }}
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
     <script src="{{ asset('js/calendar_session.js') }}"></script>
+    <script src="{{ asset('js/salle_selector.js') }}"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -82,7 +93,7 @@
     <script>
         $(document).ready(function() {
             $('#stag-selector').select2({
-                placeholder: "Select one or more stagiaires",
+                placeholder: "Sélectionnez un ou plusieurs stagiaires",
                 allowClear: true
             });
         });

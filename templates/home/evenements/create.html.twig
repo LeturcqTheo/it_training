@@ -20,15 +20,25 @@
                 <div class="col-md-6">
                     <form id="create_event" class="p-3 border rounded shadow-sm bg-light">
                         <h5 class="mb-4">Créer un événement</h5>
-
-                        <div class="mb-3">
-                            <label for="salle-selector" class="form-label">Salle:</label>
-                            <select id="salle-selector" class="form-select">
-                                <option value="">---</option>
-                                {% for salle in salles %}
-                                    <option value="{{ salle.id }}">{{ salle.nom }}</option>
-                                {% endfor %}
-                            </select>
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label for="centre-selector" class="form-label">Centre:</label>
+                                <select id="centre-selector" class="form-select">
+                                    <option value="">-</option>
+                                    {% for centre in centres %}
+                                        <option value="{{ centre.id }}">{{ centre.nom }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="salle-selector" class="form-label">Salle:</label>
+                                <select id="salle-selector" class="form-select" disabled>
+                                    <option value="">-</option>
+                                    {% for salle in salles %}
+                                        <option value="{{ salle.id }}" data-centre="{{ salle.centreformation.id }}">{{ salle.nom }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="nom_event" class="form-label">Nom de l'evenement:</label>
@@ -65,4 +75,5 @@
     {{ parent() }}
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
     <script src="{{ asset('js/calendar_event.js') }}"></script>
+    <script src="{{ asset('js/salle_selector.js') }}"></script>
 {% endblock %}
