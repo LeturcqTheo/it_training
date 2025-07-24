@@ -7,14 +7,14 @@
     font-weight: bold;
 }
 
-.itt-sidebar-bgc {
+.itf-sidebar-bgc {
     background-color: rgb(11, 17, 75);
 }
 
-.itt-sidebar-tc {
+.itf-sidebar-tc {
     color: rgb(56, 222, 185);
 }
 
-.itt-sidebar-plc {
+.itf-sidebar-plc, .itt-sidebar-plc .nav-link:hover, .itt-sidebar-plc .nav-link:focus {
     color: rgb(113, 47, 111);
 }

@@ -64,10 +64,19 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="formateur-selector" class="form-label">Formateur</label>
+                            <select id="formateur-selector" class="form-select">
+                                <option value="">-</option>
+                                {% for formateur in formateurs %}
+                                    <option value="{{ formateur.id }}">{{ formateur }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label for="stag-selector" class="form-label">Stagiaires</label>
                             <select id="stag-selector" name="stagiaires[]" class="form-control" multiple>
                                 {% for stagiaire in stagiaires %}
-                                    <option value="{{ stagiaire.id }}">{{ stagiaire.nom }}</option>
+                                    <option value="{{ stagiaire.id }}">{{ stagiaire }}</option>
                                 {% endfor %}
                             </select>
                         </div>

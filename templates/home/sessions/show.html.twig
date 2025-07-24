@@ -16,14 +16,25 @@
                 <li><strong>Date début :</strong> {{ session.dateDebut|date('d/m/Y H:i') }}</li>
                 <li><strong>Date fin :</strong> {{ session.dateFin|date('d/m/Y H:i') }}</li>
                 <li><strong>Participants minimum :</strong> {{ session.minParticipant }}</li>
+                <li><strong>Formateur :</strong>
+                    {% if affectation and affectation.formateur %}
+                        {{ affectation.formateur.nom }} {{ affectation.formateur.prenom }}
+                        {% if affectation.confirmePresence %} ✅ {% else %} ❌ {% endif %}
+                    {% else %}
+                        <span class="fst-italic">Aucun formateur affecté</span>
+                    {% endif %}
+                </li>
                 
-                <li><strong>Liste des stagiaires :</strong> </li>
+                <li><strong>Liste des stagiaires :</strong></li>
                 {% if session.stagiaires|length > 0 %}
                     <ul>
                         {% for stagiaire in session.stagiaires %}
                             <li>{{ stagiaire.nom }} {{ stagiaire.prenom }} — {{ stagiaire.email }}</li>
                         {% endfor %}
                     </ul>
+                {% else %}
+                    <ul class="fst-italic">Aucun stagiaire inscrit</ul>
+                    
                 {% endif %}
             </ul>
             <a href="{{ path('app_home') }}" class="btn btn-secondary mb-3">Retour</a>

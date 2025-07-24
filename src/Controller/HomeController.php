@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Affecte;
 use App\Entity\Evenement;
+use App\Entity\Formateur;
 use App\Entity\Formation;
 use App\Entity\Salle;
 use App\Entity\Session;
+use App\Repository\AffecteRepository;
 use App\Repository\CentreFormationRepository;
 use App\Repository\EvenementRepository;
+use App\Repository\FormateurRepository;
 use App\Repository\FormationRepository;
 use App\Repository\SalleRepository;
 use App\Repository\SessionRepository;
@@ -39,10 +43,14 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/session/{id}', name: 'app_show_session')]
-    public function showSession(Session $session): Response
+    public function showSession(Session $session, AffecteRepository $affecteRepo): Response
     {
+        $affectation = $affecteRepo->findOneBy(['session' => $session]);
+
+
         return $this->render('home/sessions/show.html.twig', [
             'session' => $session,
+            'affectation' => $affectation,
         ]);
     }   
 
@@ -90,13 +98,14 @@ final class HomeController extends AbstractController
     } 
 
     #[Route('/create-session', name: 'app_create_session')]
-    public function showCreateSession(SalleRepository $salleRepository, FormationRepository $formaRepository, StagiaireRepository $stagRepository, CentreFormationRepository $centreRepo): Response
+    public function showCreateSession(SalleRepository $salleRepository, FormationRepository $formaRepository, StagiaireRepository $stagRepository, CentreFormationRepository $centreRepo, FormateurRepository $formaRepo): Response
     {
         return $this->render('home/sessions/create.html.twig', [
             'salles' => $salleRepository->findAll(),
             'formations' => $formaRepository->findAll(),
             'stagiaires' => $stagRepository->findAll(),
             'centres' => $centreRepo->findAll(),
+            'formateurs' => $formaRepo->findAll(),
         ]);
     }
 
@@ -109,6 +118,7 @@ final class HomeController extends AbstractController
         $formation = $em->getRepository(Formation::class)->find($data['formation_id']);
         $start = new \DateTimeImmutable($data['date_debut']);
         $end = new \DateTimeImmutable($data['date_fin']);
+        $formateur = $em->getRepository(Formateur::class)->find($data['formateur_id']);
 
         if ($start >= $end) {
             return new JsonResponse(['error' => 'La date de fin doit être après la date de début.'], 400);
@@ -137,8 +147,17 @@ final class HomeController extends AbstractController
                 }
             }
         }
-
         $em->persist($session);
+
+        if ($formateur != null) {
+            $affectation = (new Affecte())
+                ->setSession($session)
+                ->setFormateur($formateur)
+                ->setConfirmePresence(false);
+
+            $em->persist($affectation);
+        }
+
         $em->flush();
 
         return new JsonResponse(['success' => true, 'id' => $session->getId()]);

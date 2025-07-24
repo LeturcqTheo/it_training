@@ -74,6 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const formationId = document.getElementById('forma-selector').value;
         const minParticipant = document.getElementById('nbr_part').value;
         const stagiaires = Array.from(document.getElementById('stag-selector').selectedOptions).map(option => option.value);
+        const formateurId = document.getElementById('formateur-selector').value;
 
         if (!dateDebut || !dateFin || !salleId || !formationId || !minParticipant) {
             alert('Merci de remplir tous les champs.');
@@ -86,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
             salle_id: salleId,
             formation_id: formationId,
             nbr_part: parseInt(minParticipant),
-            stagiaires: stagiaires
+            formateur_id: formateurId
         };
 
         fetch('/create-session/create', {
@@ -111,8 +112,10 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('date_debut').value = '';
             document.getElementById('date_fin').value = '';
             document.getElementById('nbr_part').value = '';
-            document.getElementById('salle-selector').value = '';
-            document.getElementById('formation-selector').value = '';
+            document.getElementById('salle-selector').selectedIndex = 0;
+            document.getElementById('centre-selector').selectedIndex = 0;
+            document.getElementById('forma-selector').selectedIndex = 0;
+            document.getElementById('formateur-selector').selectedIndex = 0;
 
             if (currentEvent) {
                 currentEvent.remove();
