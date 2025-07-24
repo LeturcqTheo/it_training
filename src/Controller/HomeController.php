@@ -43,14 +43,14 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/session/{id}', name: 'app_show_session')]
-    public function showSession(Session $session, AffecteRepository $affecteRepo): Response
+    public function showSession(Session $session, AffecteRepository $affecteRepo, FormateurRepository $formaRepo): Response
     {
         $affectation = $affecteRepo->findOneBy(['session' => $session]);
-
 
         return $this->render('home/sessions/show.html.twig', [
             'session' => $session,
             'affectation' => $affectation,
+            'formateurs' => $formaRepo,
         ]);
     }   
 
