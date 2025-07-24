@@ -27,8 +27,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // Renders the calendar
     calendar.render();
 
-    // Fatches the events for the calendar
+    // Fetches the events for the calendar
     document.getElementById('salle-selector').addEventListener('change', function () {
+        calendar.refetchEvents();
+    });
+    document.getElementById('centre-selector').addEventListener('change', function () {
+        document.getElementById('salle-selector').selectedIndex = 0;
         calendar.refetchEvents();
     });
 

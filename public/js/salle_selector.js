@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     salleSelector.appendChild(option);
                 }
             });
-
             salleSelector.disabled = false;
         } else {
             salleSelector.disabled = true;
