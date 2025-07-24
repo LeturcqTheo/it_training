@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Affecte;
+use App\Entity\Checklist;
 use App\Entity\Evenement;
 use App\Entity\Formateur;
 use App\Entity\Formation;
@@ -10,6 +11,7 @@ use App\Entity\Salle;
 use App\Entity\Session;
 use App\Repository\AffecteRepository;
 use App\Repository\CentreFormationRepository;
+use App\Repository\ChecklistRepository;
 use App\Repository\EvenementRepository;
 use App\Repository\FormateurRepository;
 use App\Repository\FormationRepository;
@@ -43,16 +45,19 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/session/{id}', name: 'app_show_session')]
-    public function showSession(Session $session, AffecteRepository $affecteRepo, FormateurRepository $formaRepo): Response
+    public function showSession(Session $session, AffecteRepository $affecteRepo, FormateurRepository $formaRepo, StagiaireRepository $stagRepo): Response
     {
         $affectation = $affecteRepo->findOneBy(['session' => $session]);
+        $stagiairesCompatibles = $stagRepo->findBy(['formation' => $session->getFormation()]);
 
         return $this->render('home/sessions/show.html.twig', [
             'session' => $session,
             'affectation' => $affectation,
             'formateurs' => $formaRepo,
+            'stagiaires' => $stagiairesCompatibles,
         ]);
-    }   
+    }
+
 
     #[Route('/create-event', name: 'app_create_event')]
     public function showCreateEvent(SalleRepository $salleRepository, CentreFormationRepository $centreRepo): Response
@@ -162,4 +167,91 @@ final class HomeController extends AbstractController
 
         return new JsonResponse(['success' => true, 'id' => $session->getId()]);
     } 
+
+    #[Route('/session/{id}/assign-formateur', name: 'assign_formateur_to_session', methods: ['POST'])]
+    public function assignFormateur(Session $session, Request $request, FormateurRepository $formateurRepo, EntityManagerInterface $em): Response
+    {
+        $formateurId = $request->request->get('formateur_id');
+        $formateur = $formateurRepo->find($formateurId);
+
+        if (!$formateur) {
+            $this->addFlash('error', 'Formateur non trouvé.');
+            return $this->redirectToRoute('app_show_session', ['id' => $session->getId()]);
+        }
+
+        $affectation = (new Affecte())
+            ->setSession($session)
+            ->setFormateur($formateur)
+            ->setConfirmePresence(false);
+
+        $em->persist($affectation);
+        $em->flush();
+
+        $this->addFlash('success', 'Formateur affecté avec succès.');
+        return $this->redirectToRoute('app_show_session', ['id' => $session->getId()]);
+    }
+
+
+    #[Route('/session/{id}/update-stagiaires', name: 'update_stagiaires_for_session', methods: ['POST'])]
+    public function updateStagiaires(Session $session, Request $request, StagiaireRepository $stagRepo, EntityManagerInterface $em): Response
+    {
+        $selectedIds = $request->get('stagiaires', []);
+        $stagiaires = [];
+
+        foreach ($selectedIds as $id) {
+            $stagiaire = $stagRepo->find($id);
+            if ($stagiaire) {
+                $stagiaires[] = $stagiaire;
+            }
+        }
+
+        // Remove existing
+        foreach ($session->getStagiaires() as $existing) {
+            $session->removeStagiaire($existing);
+        }
+
+        // Add new ones
+        foreach ($stagiaires as $stagiaire) {
+            $session->addStagiaire($stagiaire);
+        }
+
+        $em->persist($session);
+        $em->flush();
+
+        $this->addFlash('success', 'Liste des stagiaires mise à jour.');
+        return $this->redirectToRoute('app_show_session', ['id' => $session->getId()]);
+    }
+    
+    #[Route('/session/{id}/update-checklist', name: 'update_checklist', methods: ['POST'])]
+    public function updateChecklist(int $id, Request $request, EntityManagerInterface $em): Response
+    {
+        $session = $em->getRepository(Session::class)->find($id);
+
+        if (!$session) {
+            throw $this->createNotFoundException('Session non trouvée.');
+        }
+
+        $checklist = $session->getChecklist();
+
+        if (!$checklist) {
+            $checklist = new Checklist();
+            $checklist->setSession($session);
+            $em->persist($checklist);
+        }
+
+        // Pour chaque case, on vérifie si elle est cochée (clé présente dans POST)
+        $checklist->setSalle($request->request->has('salle'));
+        $checklist->setMachines($request->request->has('machines'));
+        $checklist->setSupports($request->request->has('supports'));
+        $checklist->setFormulaire($request->request->has('formulaire'));
+        $checklist->setFichePresence($request->request->has('fichePresence'));
+        $checklist->setTicketsRepas($request->request->has('ticketsRepas'));
+
+        $em->flush();
+
+        $this->addFlash('success', 'Checklist mise à jour avec succès.');
+
+        return $this->redirectToRoute('app_show_session', ['id' => $session->getId()]);
+    }
+
 }

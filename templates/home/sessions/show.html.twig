@@ -8,37 +8,129 @@
         {% include "sidebar/sidebar.html.twig" %}
 
         <main class="col-md-10 ms-sm-auto px-4 py-4">
-            <h2 class="fw-bold">{{ session }}</h2>
+            <h2 class="fw-bold mb-4">Détail de la session</h2>
             <ul class="nav nav-tabs my-3"></ul>
-            <ul>
-                <li><strong>Formation :</strong> {{ session.formation.nom }}</li>
-                <li><strong>Salle :</strong> {{ session.salle }}</li>
-                <li><strong>Date début :</strong> {{ session.dateDebut|date('d/m/Y H:i') }}</li>
-                <li><strong>Date fin :</strong> {{ session.dateFin|date('d/m/Y H:i') }}</li>
-                <li><strong>Participants minimum :</strong> {{ session.minParticipant }}</li>
-                <li><strong>Formateur :</strong>
-                    {% if affectation and affectation.formateur %}
-                        {{ affectation.formateur.nom }} {{ affectation.formateur.prenom }}
-                        {% if affectation.confirmePresence %} ✅ {% else %} ❌ {% endif %}
-                    {% else %}
-                        <span class="fst-italic">Aucun formateur affecté</span>
+
+            <div class="mb-3">
+                <a href="{{ path('app_home') }}" class="btn btn-secondary">Retour</a>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="p-3 border rounded shadow-sm bg-light">
+                        <h5 class="mb-3">Informations générales</h5>
+                        <ul class="list-unstyled">
+                            <li><strong>Formation :</strong> {{ session.formation.nom }}</li>
+                            <li><strong>Salle :</strong> {{ session.salle }}</li>
+                            <li><strong>Date début :</strong> {{ session.dateDebut|date('d/m/Y H:i') }}</li>
+                            <li><strong>Date fin :</strong> {{ session.dateFin|date('d/m/Y H:i') }}</li>
+                            <li>
+                                <strong>Participants minimum :</strong>
+                                {% set nbStagiaires = session.stagiaires|length %}
+                                {% if nbStagiaires >= session.minParticipant %}
+                                    <span class="text-success fw-bold">{{ session.minParticipant }}</span>
+                                {% else %}
+                                    <span class="text-danger fw-bold">{{ session.minParticipant }}</span>
+                                {% endif %}
+                                <small class="text-muted">({{ nbStagiaires }} stagiaire{{ nbStagiaires > 1 ? 's' : '' }} inscrit{{ nbStagiaires > 1 ? 's' : '' }})</small>
+                            </li>
+                            <li><strong>Formateur :</strong>
+                                {% if affectation and affectation.formateur %}
+                                    {{ affectation.formateur }}{% if affectation.confirmePresence %} <span class="text-success fw-bold">Confirmé</span>{% else %} <span class="text-danger fw-bold">Non confirmé</span>{% endif %}
+                                {% else %}
+                                    <span class="fst-italic">Aucun formateur affecté</span>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+
+                    {% if not affectation %}
+                    <div class="mt-4 p-3 border rounded shadow-sm bg-light">
+                        <h5 class="mb-3">Affecter un formateur</h5>
+                        <form method="post" action="{{ path('assign_formateur_to_session', {'id': session.id}) }}">
+                            <div class="mb-3">
+                                <label for="formateur_id" class="form-label">Formateur</label>
+                                <select name="formateur_id" id="formateur_id" class="form-select" required>
+                                    {% for formateur in formateurs.findAll() %}
+                                        <option value="{{ formateur.id }}">{{ formateur.nom }} {{ formateur.prenom }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Affecter</button>
+                        </form>
+                    </div>
                     {% endif %}
-                </li>
-                
-                <li><strong>Liste des stagiaires :</strong></li>
-                {% if session.stagiaires|length > 0 %}
-                    <ul>
-                        {% for stagiaire in session.stagiaires %}
-                            <li>{{ stagiaire.nom }} {{ stagiaire.prenom }} — {{ stagiaire.email }}</li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <ul class="fst-italic">Aucun stagiaire inscrit</ul>
-                    
-                {% endif %}
-            </ul>
-            <a href="{{ path('app_home') }}" class="btn btn-secondary mb-3">Retour</a>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="p-3 border rounded shadow-sm bg-light">
+                        <h5 class="mb-3">Liste des stagiaires</h5>
+                        <form method="post" action="{{ path('update_stagiaires_for_session', {'id': session.id}) }}">
+                            <div class="mb-3">
+                                <select id="stag-selector" name="stagiaires[]" class="form-control" multiple>
+                                    {% for stagiaire in stagiaires %}
+                                        <option value="{{ stagiaire.id }}"{% if session.stagiaires.contains(stagiaire) %}selected{% endif %}>
+                                            {{ stagiaire }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Mettre à jour</button>
+                        </form>
+                    </div>
+                </div>
+                    <div class="col-md-4">
+                        <div class="p-3 border rounded shadow-sm bg-light" style="max-width: none;">
+                            <h5 class="mb-3">Checklist logistique</h5>
+
+                            <form method="post" action="{{ path('update_checklist', {'id': session.id}) }}">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" name="salle" id="salle" value="1" {% if session.checklist.salle %}checked{% endif %}>
+                                    <label class="form-check-label" for="salle">Installation de la salle</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" name="machines" id="machines" value="1" {% if session.checklist.machines %}checked{% endif %}>
+                                    <label class="form-check-label" for="machines">Machines opérationnelles</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" name="supports" id="supports" value="1" {% if session.checklist.supports %}checked{% endif %}>
+                                    <label class="form-check-label" for="supports">Supports de cours imprimés</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" name="formulaire" id="formulaire" value="1" {% if session.checklist.formulaire %}checked{% endif %}>
+                                    <label class="form-check-label" for="formulaire">Formulaire HTML préparé</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" name="fichePresence" id="fichePresence" value="1" {% if session.checklist.fichePresence %}checked{% endif %}>
+                                    <label class="form-check-label" for="fichePresence">Fiche de présence imprimé</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" name="ticketsRepas" id="ticketsRepas" value="1" {% if session.checklist.ticketsRepas %}checked{% endif %}>
+                                    <label class="form-check-label" for="ticketsRepas">Tickets repas imprimés</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3 w-100">Enregistrer la checklist</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#stag-selector').select2({
+                placeholder: "Sélectionnez un ou plusieurs stagiaires",
+                allowClear: true
+            });
+        });
+    </script>
 {% endblock %}

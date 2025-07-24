@@ -9,6 +9,7 @@
 
 .itf-sidebar-bgc {
     background-color: rgb(11, 17, 75);
+    min-height: 100vh;
 }
 
 .itf-sidebar-tc {
