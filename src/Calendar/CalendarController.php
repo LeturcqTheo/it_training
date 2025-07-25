@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventSubscriber;
+namespace App\Calendar;
 
 use App\Repository\EvenementRepository;
 use App\Repository\SessionRepository;
@@ -9,7 +9,7 @@ use CalendarBundle\Event\SetDataEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class CalendarSubscriber implements EventSubscriberInterface
+class CalendarController implements EventSubscriberInterface
 {
     private EvenementRepository $evenementRepository;
     private SessionRepository $sessionRepository;
