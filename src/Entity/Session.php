@@ -66,7 +66,7 @@ class Session
 
     public function __toString(): string
     {
-        return $this->formation->getNom() . '_' . $this->getDateDebut()->format('Y-m-d').'_'.$this->getDateFin()->format('Y-m-d');
+        return $this->formation->getNom() . ' ' . $this->getDateDebut()->format('Y-m').' '.$this->getDateFin()->format('Y-m');
     }
 
     public function getId(): ?int

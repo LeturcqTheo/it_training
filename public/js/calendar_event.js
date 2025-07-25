@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            right: 'dayGridYear,dayGridMonth,timeGridWeek,timeGridDay'
         },
         eventClick: function (info) {
             if (info.event.url) {

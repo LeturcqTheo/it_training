@@ -45,7 +45,7 @@ class Salle
 
     public function __toString(): string
     {
-        return $this->nom . ' - ' . $this->getCentreformation();
+        return $this->getCentreformation()  . ', ' . $this->nom;
     }
 
     public function getId(): ?int
