@@ -27,7 +27,7 @@ class FormationCrudController extends AbstractCrudController
                     'Intra' => 'intra',
                 ]),
             MoneyField::new('prix', 'Prix')->setCurrency('EUR'),
-            AssociationField::new('theme', 'Thème'),
+            AssociationField::new('sousthemes', 'Sous-Thèmes'),
             TextEditorField::new('fiche_formation', 'Fiche Formation'),
         ];
     }
