@@ -28,10 +28,6 @@ class Formation
     #[ORM\Column(type: Types::TEXT)]
     private ?string $ficheFormation = null;
 
-    #[ORM\ManyToOne(inversedBy: 'formations')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Theme $theme = null;
-
     /**
      * @var Collection<int, session>
      */
@@ -44,10 +40,17 @@ class Formation
     #[ORM\OneToMany(targetEntity: Stagiaire::class, mappedBy: 'formation')]
     private Collection $stagiaires;
 
+    /**
+     * @var Collection<int, soustheme>
+     */
+    #[ORM\ManyToMany(targetEntity: soustheme::class, inversedBy: 'formations')]
+    private Collection $sousthemes;
+
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
         $this->stagiaires = new ArrayCollection();
+        $this->sousthemes = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -108,18 +111,6 @@ class Formation
         return $this;
     }
 
-    public function getTheme(): ?theme
-    {
-        return $this->theme;
-    }
-
-    public function setTheme(?theme $theme): static
-    {
-        $this->theme = $theme;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, session>
      */
@@ -176,6 +167,30 @@ class Formation
                 $stagiaire->setFormation(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, soustheme>
+     */
+    public function getSousthemes(): Collection
+    {
+        return $this->sousthemes;
+    }
+
+    public function addSoustheme(soustheme $soustheme): static
+    {
+        if (!$this->sousthemes->contains($soustheme)) {
+            $this->sousthemes->add($soustheme);
+        }
+
+        return $this;
+    }
+
+    public function removeSoustheme(soustheme $soustheme): static
+    {
+        $this->sousthemes->removeElement($soustheme);
 
         return $this;
     }

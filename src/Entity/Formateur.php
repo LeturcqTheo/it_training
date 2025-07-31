@@ -2,65 +2,41 @@
 
 namespace App\Entity;
 
-use App\Repository\FormationRepository;
+use App\Repository\FormateurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: FormationRepository::class)]
-class Formation
+#[ORM\Entity(repositoryClass: FormateurRepository::class)]
+class Formateur extends User
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $type = null;
+    private ?string $prenom = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $cv = null;
 
     #[ORM\Column]
-    private ?float $prix = null;
-
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $ficheFormation = null;
+    private ?bool $est_valide = null;
 
     /**
-     * @var Collection<int, session>
+     * @var Collection<int, Affecte>
      */
-    #[ORM\OneToMany(targetEntity: Session::class, mappedBy: 'formation')]
-    private Collection $sessions;
-
-    /**
-     * @var Collection<int, Stagiaire>
-     */
-    #[ORM\OneToMany(targetEntity: Stagiaire::class, mappedBy: 'formation')]
-    private Collection $stagiaires;
-
-    /**
-     * @var Collection<int, soustheme>
-     */
-    #[ORM\ManyToMany(targetEntity: soustheme::class, inversedBy: 'formations')]
-    private Collection $sousthemes;
+    #[ORM\OneToMany(targetEntity: Affecte::class, mappedBy: 'formateur')]
+    private Collection $affectes;
 
     public function __construct()
     {
-        $this->sessions = new ArrayCollection();
-        $this->stagiaires = new ArrayCollection();
-        $this->sousthemes = new ArrayCollection();
+        $this->affectes = new ArrayCollection();
+        $this->setRoles(["ROLE_FORMATEUR"]);
     }
 
     public function __toString(): string
     {
-        return $this->nom;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
+        return $this->nom . ' ' . $this->prenom;
     }
 
     public function getNom(): ?string
@@ -75,122 +51,68 @@ class Formation
         return $this;
     }
 
-    public function getType(): ?string
+    public function getPrenom(): ?string
     {
-        return $this->type;
+        return $this->prenom;
     }
 
-    public function setType(string $type): static
+    public function setPrenom(string $prenom): static
     {
-        $this->type = $type;
+        $this->prenom = $prenom;
 
         return $this;
     }
 
-    public function getPrix(): ?float
+    public function getCv(): ?string
     {
-        return $this->prix;
+        return $this->cv;
     }
 
-    public function setPrix(float $prix): static
+    public function setCv(string $cv): static
     {
-        $this->prix = $prix;
+        $this->cv = $cv;
 
         return $this;
     }
 
-    public function getFicheFormation(): ?string
+    public function isEstValide(): ?bool
     {
-        return $this->ficheFormation;
+        return $this->est_valide;
     }
 
-    public function setFicheFormation(string $ficheFormation): static
+    public function setEstValide(bool $est_valide): static
     {
-        $this->ficheFormation = $ficheFormation;
+        $this->est_valide = $est_valide;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, session>
+     * @return Collection<int, Affecte>
      */
-    public function getSessions(): Collection
+    public function getAffectes(): Collection
     {
-        return $this->sessions;
+        return $this->affectes;
     }
 
-    public function addSession(Session $session): static
+    public function addAffecte(Affecte $affecte): static
     {
-        if (!$this->sessions->contains($session)) {
-            $this->sessions->add($session);
-            $session->setFormation($this);
+        if (!$this->affectes->contains($affecte)) {
+            $this->affectes->add($affecte);
+            $affecte->setFormateur($this);
         }
 
         return $this;
     }
 
-    public function removeSession(Session $session): static
+    public function removeAffecte(Affecte $affecte): static
     {
-        if ($this->sessions->removeElement($session)) {
+        if ($this->affectes->removeElement($affecte)) {
             // set the owning side to null (unless already changed)
-            if ($session->getFormation() === $this) {
-                $session->setFormation(null);
+            if ($affecte->getFormateur() === $this) {
+                $affecte->setFormateur(null);
             }
         }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Stagiaire>
-     */
-    public function getStagiaires(): Collection
-    {
-        return $this->stagiaires;
-    }
-
-    public function addStagiaire(Stagiaire $stagiaire): static
-    {
-        if (!$this->stagiaires->contains($stagiaire)) {
-            $this->stagiaires->add($stagiaire);
-            $stagiaire->setFormation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStagiaire(Stagiaire $stagiaire): static
-    {
-        if ($this->stagiaires->removeElement($stagiaire)) {
-            // set the owning side to null (unless already changed)
-            if ($stagiaire->getFormation() === $this) {
-                $stagiaire->setFormation(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, soustheme>
-     */
-    public function getSousthemes(): Collection
-    {
-        return $this->sousthemes;
-    }
-
-    public function addSoustheme(soustheme $soustheme): static
-    {
-        if (!$this->sousthemes->contains($soustheme)) {
-            $this->sousthemes->add($soustheme);
-        }
-
-        return $this;
-    }
-
-    public function removeSoustheme(soustheme $soustheme): static
-    {
-        $this->sousthemes->removeElement($soustheme);
 
         return $this;
     }
