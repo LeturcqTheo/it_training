@@ -25,7 +25,7 @@ class SousTheme
     /**
      * @var Collection<int, Formation>
      */
-    #[ORM\ManyToMany(targetEntity: Formation::class, mappedBy: 'sous_themes')]
+    #[ORM\ManyToMany(targetEntity: Formation::class, mappedBy: 'sousthemes')]
     private Collection $formations;
 
     public function __construct()
@@ -79,7 +79,7 @@ class SousTheme
     {
         if (!$this->formations->contains($formation)) {
             $this->formations->add($formation);
-            
+            $formation->addSoustheme($this);
         }
 
         return $this;
@@ -88,7 +88,7 @@ class SousTheme
     public function removeFormation(Formation $formation): static
     {
         if ($this->formations->removeElement($formation)) {
-            
+            $formation->removeSoustheme($this);
         }
 
         return $this;
