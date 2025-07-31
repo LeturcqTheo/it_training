@@ -43,7 +43,7 @@ class Formation
     /**
      * @var Collection<int, soustheme>
      */
-    #[ORM\ManyToMany(targetEntity: soustheme::class, inversedBy: 'formations')]
+    #[ORM\ManyToMany(targetEntity: SousTheme::class, inversedBy: 'formations')]
     private Collection $sousthemes;
 
     public function __construct()
@@ -179,7 +179,7 @@ class Formation
         return $this->sousthemes;
     }
 
-    public function addSoustheme(soustheme $soustheme): static
+    public function addSoustheme(SousTheme $soustheme): static
     {
         if (!$this->sousthemes->contains($soustheme)) {
             $this->sousthemes->add($soustheme);
@@ -188,7 +188,7 @@ class Formation
         return $this;
     }
 
-    public function removeSoustheme(soustheme $soustheme): static
+    public function removeSoustheme(SousTheme $soustheme): static
     {
         $this->sousthemes->removeElement($soustheme);
 
