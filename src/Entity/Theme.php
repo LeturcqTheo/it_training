@@ -19,21 +19,14 @@ class Theme
     private ?string $intitule = null;
 
     /**
-     * @var Collection<int, soustheme>
+     * @var Collection<int, SousTheme>
      */
     #[ORM\OneToMany(targetEntity: SousTheme::class, mappedBy: 'theme', orphanRemoval: true)]
     private Collection $sous_themes;
 
-    /**
-     * @var Collection<int, Formation>
-     */
-    #[ORM\OneToMany(targetEntity: Formation::class, mappedBy: 'theme')]
-    private Collection $formations;
-
     public function __construct()
     {
         $this->sous_themes = new ArrayCollection();
-        $this->formations = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -66,7 +59,7 @@ class Theme
         return $this->sous_themes;
     }
 
-    public function addSousTheme(soustheme $sousTheme): static
+    public function addSousTheme(SousTheme $sousTheme): static
     {
         if (!$this->sous_themes->contains($sousTheme)) {
             $this->sous_themes->add($sousTheme);
@@ -76,42 +69,12 @@ class Theme
         return $this;
     }
 
-    public function removeSousTheme(soustheme $sousTheme): static
+    public function removeSousTheme(SousTheme $sousTheme): static
     {
         if ($this->sous_themes->removeElement($sousTheme)) {
             // set the owning side to null (unless already changed)
             if ($sousTheme->getTheme() === $this) {
                 $sousTheme->setTheme(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Formation>
-     */
-    public function getFormations(): Collection
-    {
-        return $this->formations;
-    }
-
-    public function addFormation(Formation $formation): static
-    {
-        if (!$this->formations->contains($formation)) {
-            $this->formations->add($formation);
-            $formation->setTheme($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFormation(Formation $formation): static
-    {
-        if ($this->formations->removeElement($formation)) {
-            // set the owning side to null (unless already changed)
-            if ($formation->getTheme() === $this) {
-                $formation->setTheme(null);
             }
         }
 
