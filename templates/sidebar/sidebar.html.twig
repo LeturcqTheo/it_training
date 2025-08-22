@@ -1,22 +1,51 @@
-<nav class="col-md-2 d-none d-md-block itf-sidebar-bgc text-white p-0">
+{% set currentRoute = app.request.attributes.get('_route') %}
+
+{% set tableauRoutes = [] %}
+{% set catalogueRoutes = [] %}
+{% set sessionRoutes = ['app_sessions', 'app_create_event', 'app_create_session', 'app_show_event', 'app_show_session'] %}
+{% set participantRoutes = [] %}
+
+<nav class="col-md-2 d-none d-md-block itf-sidebar-bgc itf-sidebar-size text-white p-0">
     <div class="p-3">
-        <h5 class="text-info itf-sidebar-tc">Formation Pro</h5>
+        <h5 class="text-info itf-sidebar-tc">IT-Training</h5>
         <ul class="nav flex-column mt-4">
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">Tableau de bord</a>
+            <li class="nav-item {{ currentRoute in tableauRoutes ? 'bg-light itt-sidebar-plc rounded'}}">
+                <a href="#" class="nav-link itf-sidebar-plc {{ currentRoute in tableauRoutes ? 'itf-sidebar-plc ': 'text-white' }}">Tableau de bord</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">Catalogue</a>
+            <li class="nav-item {{ currentRoute in catalogueRoutes ? 'bg-light itt-sidebar-plc rounded'}}">
+                <a href="#" class="nav-link itf-sidebar-plc {{ currentRoute in catalogueRoutes ? 'itf-sidebar-plc ': 'text-white' }}">Catalogue</a>
             </li>
-            <li class="nav-item bg-light itt-sidebar-plc rounded">
-                <a class="nav-link itf-sidebar-plc" href="#">Sessions</a>
+            <li class="nav-item {{ currentRoute in sessionRoutes ? 'bg-light itt-sidebar-plc rounded'}}">
+                <a href="{{ path('app_sessions') }}" class="nav-link itf-sidebar-plc {{ currentRoute in sessionRoutes ? 'itf-sidebar-plc ': 'text-white' }}">Sessions</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">Participants</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">Factures</a>
+            <li class="nav-item {{ currentRoute in participantRoutes ? 'bg-light itt-sidebar-plc rounded'}}">
+                <a href="#" class="nav-link itf-sidebar-plc {{ currentRoute in participantRoutes ? 'itf-sidebar-plc ': 'text-white' }}">Participants</a>
             </li>
         </ul>
+    </div>
+</nav>
+
+<nav class="navbar navbar-expand-md navbar-dark itf-sidebar-bgc d-md-none">
+    <div class="container-fluid">
+        <h5 class="text-info itf-sidebar-tc">IT-Training</h5>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topbarNav" aria-controls="topbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="topbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item {{ currentRoute in tableauRoutes ? 'bg-light itt-sidebar-plc rounded'}}">
+                    <a href="#" class="nav-link itf-sidebar-plc {{ currentRoute in tableauRoutes ? 'itf-sidebar-plc ': 'text-white'  }}">Tableau de bord</a>
+                </li>
+                <li class="nav-item {{ currentRoute in catalogueRoutes ? 'bg-light itt-sidebar-plc rounded'}}">
+                    <a href="#" class="nav-link itf-sidebar-plc {{ currentRoute in catalogueRoutes ? 'itf-sidebar-plc ': 'text-white' }}">Catalogue</a>
+                </li>
+                <li class="nav-item {{ currentRoute in sessionRoutes ? 'bg-light itt-sidebar-plc rounded'}}">
+                    <a href="{{ path('app_sessions') }}" itf-sidebar-plc class="nav-link {{ currentRoute in sessionRoutes ? 'itf-sidebar-plc ': 'text-white' }}">Sessions</a>
+                </li>
+                <li class="nav-item {{ currentRoute in participantRoutes ? 'bg-light itt-sidebar-plc rounded'}}">
+                    <a href="#" class="nav-link itf-sidebar-plc {{ currentRoute in participantRoutes ? 'itf-sidebar-plc ': 'text-white' }}">Participants</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>

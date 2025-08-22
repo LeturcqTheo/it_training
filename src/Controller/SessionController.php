@@ -25,12 +25,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class HomeController extends AbstractController
+final class SessionController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    #[Route('/', name: 'app_sessions')]
     public function index(SalleRepository $salleRepository, CentreFormationRepository $centreRepo): Response
     {
-        return $this->render('home/index.html.twig', [
+        return $this->render('session/index.html.twig', [
             'salles' => $salleRepository->findAll(),
             'centres' => $centreRepo->findAll(),
         ]);
@@ -39,7 +39,7 @@ final class HomeController extends AbstractController
     #[Route('/evenement/{id}', name: 'app_show_event')]
     public function showEvenement(Evenement $evenement): Response
     {
-        return $this->render('home/evenements/show.html.twig', [
+        return $this->render('session/evenements/show.html.twig', [
             'evenement' => $evenement,
         ]);
     }
@@ -50,7 +50,7 @@ final class HomeController extends AbstractController
         $affectation = $affecteRepo->findOneBy(['session' => $session]);
         $stagiairesCompatibles = $stagRepo->findBy(['formation' => $session->getFormation()]);
 
-        return $this->render('home/sessions/show.html.twig', [
+        return $this->render('session/sessions/show.html.twig', [
             'session' => $session,
             'affectation' => $affectation,
             'formateurs' => $formaRepo,
@@ -62,7 +62,7 @@ final class HomeController extends AbstractController
     #[Route('/create-event', name: 'app_create_event')]
     public function showCreateEvent(SalleRepository $salleRepository, CentreFormationRepository $centreRepo): Response
     {
-        return $this->render('home/evenements/create.html.twig', [
+        return $this->render('session/evenements/create.html.twig', [
             'salles' => $salleRepository->findAll(),
             'centres' => $centreRepo->findAll(),
         ]);
@@ -105,7 +105,7 @@ final class HomeController extends AbstractController
     #[Route('/create-session', name: 'app_create_session')]
     public function showCreateSession(SalleRepository $salleRepository, FormationRepository $formaRepository, StagiaireRepository $stagRepository, CentreFormationRepository $centreRepo, FormateurRepository $formaRepo): Response
     {
-        return $this->render('home/sessions/create.html.twig', [
+        return $this->render('session/sessions/create.html.twig', [
             'salles' => $salleRepository->findAll(),
             'formations' => $formaRepository->findAll(),
             'stagiaires' => $stagRepository->findAll(),

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajout d'une session{% endblock %}
+{% block title %}Ajout d'un évenement{% endblock %}
 
 {% block body %}
 <div class="container-fluid">
@@ -8,9 +8,8 @@
         {% include "sidebar/sidebar.html.twig" %}
 
         <main class="col-md-10 ms-sm-auto px-4 py-4">
-            <h2 class="fw-bold">Ajout d'une session</h2>
+            <h2 class="fw-bold">Ajout d'un évenement</h2>
             <ul class="nav nav-tabs my-3"></ul>
-
 
             <div class="row my-4">
                 <div class="col-md-6">
@@ -18,8 +17,8 @@
                 </div>
 
                 <div class="col-md-6">
-                    <form id="create_session" class="p-3 border rounded shadow-sm bg-light">
-                        <h5 class="mb-4">Créer une session</h5>
+                    <form id="create_event" class="p-3 border rounded shadow-sm bg-light">
+                        <h5 class="mb-4">Créer un événement</h5>
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label for="centre-selector" class="form-label">Centre <span class='text-danger fw-bold'>*</span></label>
@@ -41,13 +40,12 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="forma-selector" class="form-label">Formation <span class='text-danger fw-bold'>*</span></label>
-                            <select id="forma-selector" class="form-select">
-                                <option value="">---</option>
-                                {% for formation in formations %}
-                                    <option value="{{ formation.id }}">{{ formation.nom }}</option>
-                                {% endfor %}
-                            </select>
+                            <label for="nom_event" class="form-label">Nom de l'evenement <span class='text-danger fw-bold'>*</span></label>
+                            <input id="nom_event" name="nom_event" type="text" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nom_resp" class="form-label">Nom du resposable <span class='text-danger fw-bold'>*</span></label>
+                            <input id="nom_resp" name="nom_resp" type="text" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label for="nbr_part" class="form-label">Nbr de participants <span class='text-danger fw-bold'>*</span></label>
@@ -63,28 +61,11 @@
                                 <input id="date_fin" name="date_fin" type="datetime-local" class="form-control">
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="formateur-selector" class="form-label">Formateur</label>
-                            <select id="formateur-selector" class="form-select">
-                                <option value="">-</option>
-                                {% for formateur in formateurs %}
-                                    <option value="{{ formateur.id }}">{{ formateur }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="stag-selector" class="form-label">Stagiaires</label>
-                            <select id="stag-selector" name="stagiaires[]" class="form-control" multiple>
-                                {% for stagiaire in stagiaires %}
-                                    <option value="{{ stagiaire.id }}">{{ stagiaire }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Créer la session</button>
+                        <button type="submit" class="btn btn-primary w-100">Créer l'événement</button>
                     </form>
                 </div>
             </div>
-            <a href="{{ path('app_home') }}" class="btn btn-secondary mb-3">Retour</a>
+            <a href="{{ path('app_sessions') }}" class="btn btn-secondary mb-3">Retour</a>
         </main>
     </div>
 </div>
@@ -93,19 +74,6 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
-    <script src="{{ asset('js/calendar_session.js') }}"></script>
+    <script src="{{ asset('js/calendar_event.js') }}"></script>
     <script src="{{ asset('js/salle_selector.js') }}"></script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#stag-selector').select2({
-                placeholder: "Sélectionnez un ou plusieurs stagiaires",
-                allowClear: true,
-                width: '100%'
-            });
-        });
-    </script>
 {% endblock %}

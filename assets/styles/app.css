@@ -7,9 +7,12 @@
     font-weight: bold;
 }
 
+.itf-sidebar-size {
+    min-height: 100vh;
+}
+
 .itf-sidebar-bgc {
     background-color: rgb(11, 17, 75);
-    min-height: 100vh;
 }
 
 .itf-sidebar-tc {
@@ -18,4 +21,20 @@
 
 .itf-sidebar-plc, .itt-sidebar-plc .nav-link:hover, .itt-sidebar-plc .nav-link:focus {
     color: rgb(113, 47, 111);
+}
+
+
+.navbar-nav .nav-item a {
+    margin-left: 1rem !important;
+}
+
+/* Calendar responsive */
+@media (max-width: 600px) {
+  .fc-header-toolbar {
+    flex-direction: column !important;
+    gap: 1rem;
+  }
+  .col-md-6 {
+    margin-top: 1rem;
+  }
 }
