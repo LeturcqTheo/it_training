@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
             formateur_id: formateurId
         };
 
-        fetch('/create-session/create', {
+        fetch('/sessions/create-session/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -27,7 +27,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class SessionController extends AbstractController
 {
-    #[Route('/', name: 'app_sessions')]
+    #[Route('/sessions', name: 'app_sessions')]
     public function index(SalleRepository $salleRepository, CentreFormationRepository $centreRepo): Response
     {
         return $this->render('session/index.html.twig', [
@@ -36,7 +36,7 @@ final class SessionController extends AbstractController
         ]);
     }
     
-    #[Route('/evenement/{id}', name: 'app_show_event')]
+    #[Route('/sessions/evenement/{id}', name: 'app_show_event')]
     public function showEvenement(Evenement $evenement): Response
     {
         return $this->render('session/evenements/show.html.twig', [
@@ -44,7 +44,7 @@ final class SessionController extends AbstractController
         ]);
     }
 
-    #[Route('/session/{id}', name: 'app_show_session')]
+    #[Route('/sessions/session/{id}', name: 'app_show_session')]
     public function showSession(Session $session, AffecteRepository $affecteRepo, FormateurRepository $formaRepo, StagiaireRepository $stagRepo): Response
     {
         $affectation = $affecteRepo->findOneBy(['session' => $session]);
@@ -59,7 +59,7 @@ final class SessionController extends AbstractController
     }
 
 
-    #[Route('/create-event', name: 'app_create_event')]
+    #[Route('/sessions/create-event', name: 'app_create_event')]
     public function showCreateEvent(SalleRepository $salleRepository, CentreFormationRepository $centreRepo): Response
     {
         return $this->render('session/evenements/create.html.twig', [
@@ -68,7 +68,7 @@ final class SessionController extends AbstractController
         ]);
     }
 
-    #[Route('/create-event/create', name: 'create_event', methods: ['POST'])]
+    #[Route('/sessions/create-event/create', name: 'create_event', methods: ['POST'])]
     public function createEvent(Request $request, EntityManagerInterface $em, EvenementRepository $eventRepo, SessionRepository $sessionRepo): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -102,7 +102,7 @@ final class SessionController extends AbstractController
         return new JsonResponse(['success' => true, 'id' => $event->getId()]);
     } 
 
-    #[Route('/create-session', name: 'app_create_session')]
+    #[Route('/sessions/create-session', name: 'app_create_session')]
     public function showCreateSession(SalleRepository $salleRepository, FormationRepository $formaRepository, StagiaireRepository $stagRepository, CentreFormationRepository $centreRepo, FormateurRepository $formaRepo): Response
     {
         return $this->render('session/sessions/create.html.twig', [
@@ -114,7 +114,7 @@ final class SessionController extends AbstractController
         ]);
     }
 
-    #[Route('/create-session/create', name: 'create_session', methods: ['POST'])]
+    #[Route('/sessions/create-session/create', name: 'create_session', methods: ['POST'])]
     public function createSession(Request $request, EntityManagerInterface $em, EvenementRepository $eventRepo, SessionRepository $sessionRepo, StagiaireRepository $stagRepo): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -168,7 +168,7 @@ final class SessionController extends AbstractController
         return new JsonResponse(['success' => true, 'id' => $session->getId()]);
     } 
 
-    #[Route('/session/{id}/assign-formateur', name: 'assign_formateur_to_session', methods: ['POST'])]
+    #[Route('/sessions/session/{id}/assign-formateur', name: 'assign_formateur_to_session', methods: ['POST'])]
     public function assignFormateur(Session $session, Request $request, FormateurRepository $formateurRepo, EntityManagerInterface $em): Response
     {
         $formateurId = $request->request->get('formateur_id');
@@ -192,7 +192,7 @@ final class SessionController extends AbstractController
     }
 
 
-    #[Route('/session/{id}/update-stagiaires', name: 'update_stagiaires_for_session', methods: ['POST'])]
+    #[Route('/sessions/session/{id}/update-stagiaires', name: 'update_stagiaires_for_session', methods: ['POST'])]
     public function updateStagiaires(Session $session, Request $request, StagiaireRepository $stagRepo, EntityManagerInterface $em): Response
     {
         $selectedIds = $request->get('stagiaires', []);
@@ -222,7 +222,7 @@ final class SessionController extends AbstractController
         return $this->redirectToRoute('app_show_session', ['id' => $session->getId()]);
     }
     
-    #[Route('/session/{id}/update-checklist', name: 'update_checklist', methods: ['POST'])]
+    #[Route('/sessions/session/{id}/update-checklist', name: 'update_checklist', methods: ['POST'])]
     public function updateChecklist(int $id, Request $request, EntityManagerInterface $em): Response
     {
         $session = $em->getRepository(Session::class)->find($id);

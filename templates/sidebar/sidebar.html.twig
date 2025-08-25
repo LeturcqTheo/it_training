@@ -3,7 +3,7 @@
 {% set tableauRoutes = [] %}
 {% set catalogueRoutes = [] %}
 {% set sessionRoutes = ['app_sessions', 'app_create_event', 'app_create_session', 'app_show_event', 'app_show_session'] %}
-{% set participantRoutes = [] %}
+{% set participantRoutes = ['app_participant'] %}
 
 <nav class="col-md-2 d-none d-md-block itf-sidebar-bgc itf-sidebar-size text-white p-0">
     <div class="p-3">
@@ -19,7 +19,7 @@
                 <a href="{{ path('app_sessions') }}" class="nav-link itf-sidebar-plc {{ currentRoute in sessionRoutes ? 'itf-sidebar-plc ': 'text-white' }}">Sessions</a>
             </li>
             <li class="nav-item {{ currentRoute in participantRoutes ? 'bg-white itt-sidebar-plc rounded'}}">
-                <a href="#" class="nav-link itf-sidebar-plc {{ currentRoute in participantRoutes ? 'itf-sidebar-plc ': 'text-white' }}">Participants</a>
+                <a href="{{ path('app_participant') }}" class="nav-link itf-sidebar-plc {{ currentRoute in participantRoutes ? 'itf-sidebar-plc ': 'text-white' }}">Participants</a>
             </li>
         </ul>
     </div>
@@ -43,7 +43,7 @@
                     <a href="{{ path('app_sessions') }}" itf-sidebar-plc class="nav-link {{ currentRoute in sessionRoutes ? 'itf-sidebar-plc ': 'text-white' }}">Sessions</a>
                 </li>
                 <li class="nav-item {{ currentRoute in participantRoutes ? 'bg-white itt-sidebar-plc rounded'}}">
-                    <a href="#" class="nav-link itf-sidebar-plc {{ currentRoute in participantRoutes ? 'itf-sidebar-plc ': 'text-white' }}">Participants</a>
+                    <a href="{{ path('app_participant') }}" class="nav-link itf-sidebar-plc {{ currentRoute in participantRoutes ? 'itf-sidebar-plc ': 'text-white' }}">Participants</a>
                 </li>
             </ul>
         </div>

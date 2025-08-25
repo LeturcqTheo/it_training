@@ -59,10 +59,6 @@
         background-color: #1e1e1e;
     }
 
-    .fc-day-today {
-        background-color: rgba(56, 222, 185, 0.2) !important;
-    }
-
     .form-select, .form-label {
         background-color: #1e1e1e;
         color: #e0e0e0;
@@ -117,12 +113,6 @@
     .select2-container--default .select2-selection__choice {
         background-color: #2a2a2a;
         color: #e0e0e0;
-    }
-
-    .select2-container--default .select2-results__option--highlighted,
-    .select2-container--default .select2-selection__choice {
-        background-color: #357ab8;
-        color: #fff;
     }
 
     .select2-container--default .select2-selection__choice__remove {

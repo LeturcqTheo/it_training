@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
             nbr_part: parseInt(nbrPart)
         };
 
-        fetch('/create-event/create', {
+        fetch('/sessions/create-event/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

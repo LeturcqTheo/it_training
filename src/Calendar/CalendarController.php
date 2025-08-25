@@ -60,7 +60,7 @@ class CalendarController implements EventSubscriberInterface
                 'borderColor' => '#007bff',
                 'textColor' => '#fff',
             ]);
-            $event->addOption('url', 'evenement/' . $evenement->getId());
+            $event->addOption('url', 'sessions/evenement/' . $evenement->getId());
             $setDataEvent->addEvent($event);
         }
 
@@ -86,7 +86,7 @@ class CalendarController implements EventSubscriberInterface
                 'borderColor' => '#28a745',
                 'textColor' => '#fff',
             ]);
-            $event->addOption('url', 'session/' . $session->getId());
+            $event->addOption('url', 'sessions/session/' . $session->getId());
             $setDataEvent->addEvent($event);
         }
     }
