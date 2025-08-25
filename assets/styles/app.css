@@ -115,6 +115,16 @@
         color: #e0e0e0;
     }
 
+    .select2-container--default .select2-results__option--selected {
+        background-color: #444 !important; /* dark background */
+        color: #e0e0e0 !important;         /* light text */
+    }
+
+    .select2-container--default .select2-results__option--highlighted.select2-results__option--selected {
+        background-color: #5897fb !important; /* slightly lighter for hover */
+        color: #fff !important;
+    }
+
     .select2-container--default .select2-selection__choice__remove {
         color: #fff;
     }
