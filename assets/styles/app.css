@@ -46,6 +46,10 @@
         color: #e0e0e0;
     }
 
+    .text-muted {
+        color: #555 !important;
+    }
+
     .fc .fc-toolbar-title {
         color: #fff !important;
     }

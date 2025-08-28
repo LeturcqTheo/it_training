@@ -7,6 +7,7 @@ use App\Entity\Checklist;
 use App\Entity\Evenement;
 use App\Entity\Formateur;
 use App\Entity\Formation;
+use App\Entity\Mail;
 use App\Entity\Salle;
 use App\Entity\Session;
 use App\Repository\AffecteRepository;
@@ -18,6 +19,7 @@ use App\Repository\FormationRepository;
 use App\Repository\SalleRepository;
 use App\Repository\SessionRepository;
 use App\Repository\StagiaireRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -253,5 +255,44 @@ final class SessionController extends AbstractController
 
         return $this->redirectToRoute('app_show_session', ['id' => $session->getId()]);
     }
+
+    #[Route('/sessions/session/{id}/notify-organisation', name: 'notify_organisation', methods: ['POST'])]
+    public function notifyOrganisationAction(int $id, EntityManagerInterface $em, UserRepository $userRepo): Response
+    {
+        $session = $em->getRepository(Session::class)->find($id);
+        $checklist = $session->getChecklist();
+
+        $items = [
+            'salle' => 'responsable@example.com',
+            'machines' => 'responsable@example.com',
+            'supports' => 'responsable@example.com',
+            'formulaire' => 'responsable@example.com',
+            'fichePresence' => 'responsable@example.com',
+            'ticketsRepas' => 'responsable@example.com',
+        ];
+
+        foreach ($items as $field => $email) {
+            if (!$checklist->{'is' . ucfirst($field)}()) {
+                $user = $userRepo->findOneBy(['email' => $email]);
+                if ($user) {
+                    $mail = (new Mail())
+                        ->setNomPrenom($user->getEmail())
+                        ->setExpediteur('responsable_logistique@example.com')
+                        ->setDestinataire($user->getEmail())
+                        ->setStatus('envoyé')
+                        ->setContenu("Bonjour,\nLa tâche '{$field}' pour la session '{$session}' n'a pas encore été validée.");
+
+                    $em->persist($mail);
+                }
+            }
+        }
+
+        $em->flush();
+
+        $this->addFlash('success', 'Les responsables ont été notifiés (Mail enregistrés en base).');
+        return $this->redirectToRoute('app_show_session', ['id' => $session->getId()]);
+    }
+
+
 
 }

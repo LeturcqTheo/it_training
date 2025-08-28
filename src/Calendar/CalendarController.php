@@ -7,6 +7,7 @@ use App\Repository\SessionRepository;
 use CalendarBundle\Entity\Event;
 use CalendarBundle\Event\SetDataEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class CalendarController implements EventSubscriberInterface
@@ -60,7 +61,7 @@ class CalendarController implements EventSubscriberInterface
                 'borderColor' => '#007bff',
                 'textColor' => '#fff',
             ]);
-            $event->addOption('url', 'sessions/evenement/' . $evenement->getId());
+            $event->addOption('url', '/sessions/evenement/' . $evenement->getId());
             $setDataEvent->addEvent($event);
         }
 
@@ -86,7 +87,9 @@ class CalendarController implements EventSubscriberInterface
                 'borderColor' => '#28a745',
                 'textColor' => '#fff',
             ]);
-            $event->addOption('url', 'sessions/session/' . $session->getId());
+
+            $event->addOption('url', '/sessions/session/' . $session->getId());
+            
             $setDataEvent->addEvent($event);
         }
     }
