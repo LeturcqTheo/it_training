@@ -104,7 +104,7 @@ class Stagiaire
         return $this->email;
     }
 
-    public function setDiplome(string $email): static
+    public function setEmail(string $email): static
     {
         $this->email = $email;
 
@@ -117,7 +117,7 @@ class Stagiaire
         return $this->diplome;
     }
 
-    public function setEmail(string $diplome): static
+    public function setDiplome(string $diplome): static
     {
         $this->diplome = $diplome;
 
