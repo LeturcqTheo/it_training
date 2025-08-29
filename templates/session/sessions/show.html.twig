@@ -34,7 +34,8 @@
                                 {% endif %}
                                 <small class="text-muted">({{ nbStagiaires }} stagiaire{{ nbStagiaires > 1 ? 's' : '' }} inscrit{{ nbStagiaires > 1 ? 's' : '' }})</small>
                             </li>
-                            <li><strong>Formateur :</strong>
+                            <li>
+                                <strong>Formateur :</strong>
                                 {% if affectation and affectation.formateur %}
                                     {{ affectation.formateur }}{% if affectation.confirmePresence %} <span class="text-success fw-bold">Confirmé</span>{% else %} <span class="text-danger fw-bold">Non confirmé</span>{% endif %}
                                 {% else %}

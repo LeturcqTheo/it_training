@@ -263,12 +263,12 @@ final class SessionController extends AbstractController
         $checklist = $session->getChecklist();
 
         $items = [
-            'salle' => 'responsable@example.com',
-            'machines' => 'responsable@example.com',
-            'supports' => 'responsable@example.com',
-            'formulaire' => 'responsable@example.com',
-            'fichePresence' => 'responsable@example.com',
-            'ticketsRepas' => 'responsable@example.com',
+            'salle' => 'responsable_salle@example.com',
+            'machines' => 'responsable_machine@example.com',
+            'supports' => 'responsable_support@example.com',
+            'formulaire' => 'responsable_formulaire@example.com',
+            'fichePresence' => 'responsable_fiches@example.com',
+            'ticketsRepas' => 'responsable_tickets@example.com',
         ];
 
         foreach ($items as $field => $email) {
